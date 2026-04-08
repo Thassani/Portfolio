@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+/* ─── Keyframes ─────────────────────────────────────────────────────────────── */
+
+/* Scan beam — sweeps top→bottom on the hero avatar */
+@keyframes scan-beam {
+  0%   { top: -4px; opacity: 0; }
+  4%   { opacity: 1; }
+  96%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Ambient blob drift */
+@keyframes blob-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-50px, -60px) scale(1.06); }
+  70%       { transform: translate(35px, 30px) scale(0.96); }
+}
+@keyframes blob-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1.03); }
+  50%       { transform: translate(65px, -40px) scale(0.94); }
+}
+@keyframes blob-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(0.97); }
+  35%       { transform: translate(-35px, 60px) scale(1.05); }
+  75%       { transform: translate(40px, -25px) scale(1.01); }
+}
+
+/* Slow conic spin for hero avatar ring */
+@keyframes conic-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes conic-spin-rev {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+/* Cursor blink for boot terminal */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Subtle float for decorative elements */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Glow pulse for active state dots */
+@keyframes glow-flicker {
+  0%, 100% { box-shadow: 0 0 6px 2px rgba(139,92,246,0.45); }
+  50%       { box-shadow: 0 0 16px 5px rgba(139,92,246,0.8); }
+}
+
+/* Shimmer text gradient sweep */
+@keyframes shimmer-move {
+  from { background-position: 0 0; }
+  to   { background-position: 200% 0; }
+}
+
+/* Ambient glow pulse for background elements */
+@keyframes ambient-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1; transform: scale(1.04); }
+}
+
+/* Card shimmer sweep on hover */
+@keyframes card-shine {
+  from { transform: translateX(-100%) rotate(25deg); }
+  to   { transform: translateX(200%) rotate(25deg); }
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  html, body {
+    height: 100%;
+  }
+
+  html {
+    scroll-behavior: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Hide scrollbar on the main container */
+  main {
+    scrollbar-width: none;
+  }
+  main::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Monospace — used sparingly for technical accents */
+  .font-sys {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(139, 92, 246, 0.3);
+  }
+}
+
+/* ─── Animation classes ─────────────────────────────────────────────────────── */
+
+.blob-1 { animation: blob-drift-1 14s ease-in-out infinite; }
+.blob-2 { animation: blob-drift-2 18s ease-in-out infinite; }
+.blob-3 { animation: blob-drift-3 22s ease-in-out infinite; }
+.blob-4 { animation: blob-drift-1 26s ease-in-out infinite reverse; }
+
+.scan-beam {
+  animation: scan-beam 3s linear infinite;
+}
+
+.conic-spin     { animation: conic-spin     24s linear infinite; }
+.conic-spin-rev { animation: conic-spin-rev 18s linear infinite; }
+
+.float-y { animation: float-y 4s ease-in-out infinite; }
+
+.cursor-blink { animation: cursor-blink 1s step-end infinite; }
+
+.glow-flicker { animation: glow-flicker 2.5s ease-in-out infinite; }
+
+.ambient-pulse { animation: ambient-pulse 8s ease-in-out infinite; }
+
+/* Noise grain (SVG data URI) */
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 150px;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Shimmer text */
+.shimmer-text {
+  background: linear-gradient(90deg, #c4b5fd 0%, #818cf8 35%, #67e8f9 55%, #c4b5fd 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-move 6s linear infinite;
+}
+
+/* Card hover shine — apply to a child overlay */
+.card-shine-overlay {
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  height: 200%;
+  top: -50%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255,255,255,0.04) 40%,
+    rgba(255,255,255,0.06) 50%,
+    rgba(255,255,255,0.04) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: card-shine 0s linear;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Corner bracket decoration */
+.corner-tl { border-top: 1px solid; border-left: 1px solid; }
+.corner-tr { border-top: 1px solid; border-right: 1px solid; }
+.corner-bl { border-bottom: 1px solid; border-left: 1px solid; }
+.corner-br { border-bottom: 1px solid; border-right: 1px solid; }
