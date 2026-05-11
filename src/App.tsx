@@ -46,6 +46,11 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
+  // Form states
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       // Calculate scroll progress
@@ -388,6 +393,71 @@ export default function App() {
                   <h4 className="font-black text-lg uppercase tracking-tighter">{interest.title}</h4>
                   <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">{interest.desc}</p>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tech Stack / Skills Grid */}
+      <section className="py-20 px-8 bg-[#06080e]">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8">
+            <div>
+              <span className="text-[12px] font-black text-purple-400 tracking-[0.4em] uppercase">EXPERTISE TECHNIQUE</span>
+              <h2 className="text-4xl font-black mt-4 tracking-tighter uppercase">Compétences SISR</h2>
+            </div>
+            <div className="flex items-center gap-4 p-4 bg-white/5 border border-white/5 rounded-2xl">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                <Target className="text-emerald-400" size={20} />
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Niveau Global</p>
+                <p className="text-sm font-bold uppercase">Opérationnel & Évolutif</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { 
+                category: "Systèmes", 
+                items: ["Windows Server (AD DS)", "Debian / Ubuntu Server", "MDT / WDS", "Scripting PowerShell"],
+                icon: <Cpu className="text-blue-400" size={24} />
+              },
+              { 
+                category: "Réseaux", 
+                items: ["Cisco (CCNA level)", "PfSense Firewall", "VLAN / Routage", "VPN (L2TP/IPsec)"],
+                icon: <Activity className="text-purple-400" size={24} />
+              },
+              { 
+                category: "Virtualisation", 
+                items: ["VMWare vSphere / ESXi", "Proxmox VE", "Citrix DaaS", "Docker / Conteneurs"],
+                icon: <ExternalLink className="text-emerald-400" size={24} />
+              },
+              { 
+                category: "Cloud & Services", 
+                items: ["Microsoft 365 Admin", "Azure Fundamentals", "Exchange Online", "GLPI / Ticketing"],
+                icon: <Mail className="text-pink-400" size={24} />
+              }
+            ].map((skill, idx) => (
+              <motion.div 
+                key={idx}
+                whileHover={{ y: -10 }}
+                className="p-10 bg-[#0f1116] border border-white/5 rounded-[50px] relative overflow-hidden group hover:border-purple-500/20 transition-all duration-500 shadow-2xl"
+              >
+                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-100 group-hover:scale-125 transition-all duration-700">
+                  {skill.icon}
+                </div>
+                <h4 className="text-lg font-black mb-6 uppercase tracking-widest text-white/50 group-hover:text-purple-400 transition-colors">{skill.category}</h4>
+                <ul className="space-y-4">
+                  {skill.items.map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-xs font-bold uppercase tracking-tight text-gray-400 group-hover:text-gray-200 transition-colors">
+                      <div className="w-1.5 h-1.5 bg-purple-500 rounded-full shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
             ))}
           </div>
@@ -895,25 +965,104 @@ export default function App() {
                  <div className="p-3 bg-white/5 rounded-xl cursor-not-allowed opacity-30"><X size={18} /></div>
                </div>
 
-               <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-                 <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] px-2">FULL NAME</label>
-                      <input type="text" placeholder="Votre nom" className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold focus:border-purple-500/50 focus:bg-white/5 focus:ring-0 outline-none transition-all placeholder:text-gray-700" />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] px-2">EMAIL ADDRESS</label>
-                      <input type="email" placeholder="votre@email.com" className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold focus:border-purple-500/50 focus:bg-white/5 focus:ring-0 outline-none transition-all placeholder:text-gray-700" />
-                    </div>
-                 </div>
-                 <div className="space-y-3">
-                    <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] px-2">MESSAGE</label>
-                    <textarea rows={5} placeholder="Comment puis-je vous aider ?" className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold focus:border-purple-500/50 focus:bg-white/5 focus:ring-0 outline-none transition-all resize-none placeholder:text-gray-700"></textarea>
-                 </div>
-                 <button className="group w-full bg-[#7c3aed] text-white py-6 rounded-2xl font-black text-sm uppercase tracking-[0.4em] hover:bg-[#6d28d9] transition-all flex items-center justify-center gap-4 active:scale-95 shadow-2xl shadow-purple-500/30">
-                   SUBMIT REQUEST <Mail size={18} className="group-hover:translate-x-2 transition-transform" />
-                 </button>
-               </form>
+               {isSuccess ? (
+                 <motion.div 
+                   initial={{ opacity: 0, scale: 0.9 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   className="h-[400px] flex flex-col items-center justify-center text-center space-y-6"
+                 >
+                   <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-emerald-500 mb-4 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                     <CheckCircle2 size={40} />
+                   </div>
+                   <h4 className="text-2xl font-black uppercase tracking-tighter">Message Envoyé !</h4>
+                   <p className="text-gray-500 uppercase text-[10px] font-bold tracking-widest max-w-[280px] leading-relaxed">
+                     Merci {formData.name}, je vous répondrai dans les plus brefs délais.
+                   </p>
+                   <button 
+                    onClick={() => setIsSuccess(false)}
+                    className="text-purple-400 text-[10px] font-black uppercase tracking-[0.4em] underline underline-offset-8"
+                   >
+                     Envoyer un autre message
+                   </button>
+                 </motion.div>
+               ) : (
+                <form className="space-y-8" onSubmit={async (e) => {
+                  e.preventDefault();
+                  setIsSubmitting(true);
+                  
+                  try {
+                    const response = await fetch("https://api.web3forms.com/submit", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                      },
+                      body: JSON.stringify({
+                        access_key: "03222d2d-4c2b-4444-adda-f3101d10820f",
+                        name: formData.name,
+                        email: formData.email,
+                        message: formData.message,
+                      }),
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                      setIsSuccess(true);
+                      setFormData({ name: '', email: '', message: '' });
+                    } else {
+                      alert("Une erreur est survenue lors de l'envoi du message.");
+                    }
+                  } catch (error) {
+                    console.error("Error submitting form:", error);
+                    alert("Une erreur de réseau est survenue.");
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }}>
+                  <div className="grid md:grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] px-2">FULL NAME</label>
+                        <input 
+                          required
+                          type="text" 
+                          placeholder="Votre nom" 
+                          value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
+                          className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold focus:border-purple-500/50 focus:bg-white/5 focus:ring-0 outline-none transition-all placeholder:text-gray-700" 
+                        />
+                      </div>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] px-2">EMAIL ADDRESS</label>
+                        <input 
+                          required
+                          type="email" 
+                          placeholder="votre@email.com" 
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold focus:border-purple-500/50 focus:bg-white/5 focus:ring-0 outline-none transition-all placeholder:text-gray-700" 
+                        />
+                      </div>
+                  </div>
+                  <div className="space-y-3">
+                      <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] px-2">MESSAGE</label>
+                      <textarea 
+                        required
+                        rows={5} 
+                        placeholder="Comment puis-je vous aider ?" 
+                        value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                        className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold focus:border-purple-500/50 focus:bg-white/5 focus:ring-0 outline-none transition-all resize-none placeholder:text-gray-700"
+                      ></textarea>
+                  </div>
+                  <button 
+                    disabled={isSubmitting}
+                    className="group w-full bg-[#7c3aed] text-white py-6 rounded-2xl font-black text-sm uppercase tracking-[0.4em] hover:bg-[#6d28d9] transition-all flex items-center justify-center gap-4 active:scale-95 shadow-2xl shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? "ENVOI EN COURS..." : "SUBMIT REQUEST"} 
+                    {!isSubmitting && <Mail size={18} className="group-hover:translate-x-2 transition-transform" />}
+                  </button>
+                </form>
+               )}
             </div>
           </div>
         </div>
