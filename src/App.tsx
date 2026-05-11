@@ -206,7 +206,7 @@ export default function App() {
             <img 
               src="photo-pro.png" 
               alt="Profile"
-              className="w-full h-full object-cover rounded-3xl shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
+              className="w-full h-full object-cover rounded-3xl shadow-2xl transition-all duration-700"
             />
           </motion.div>
 
@@ -234,7 +234,15 @@ export default function App() {
                   rel="noreferrer"
                   className="px-6 py-3 bg-[#0a66c2]/10 text-[#0a66c2] text-xs font-bold rounded-full border border-[#0a66c2]/20 tracking-widest uppercase flex items-center gap-2 hover:bg-[#0a66c2]/20 transition-all"
                 >
-                  <Linkedin size={14} /> LinkedIn Profile
+                  <Linkedin size={14} /> Profile LinkedIn
+                </a>
+                <a 
+                  href="CV_Tawab_HASSANI.pdf" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="px-6 py-3 bg-purple-500/10 text-purple-400 text-xs font-bold rounded-full border border-purple-500/20 tracking-widest uppercase flex items-center gap-2 hover:bg-purple-500/20 transition-all"
+                >
+                  <ExternalLink size={14} /> Télécharger mon CV
                 </a>
               </div>
 
@@ -528,8 +536,7 @@ export default function App() {
                   {[
                     { label: "Tableau de synthèse", type: "PDF", link: "tableau.pdf" },
                     { label: "Fiche descriptive 1", type: "PDF", link: "fiche1.pdf" },
-                    { label: "Fiche descriptive 2", type: "PDF", link: "fiche2.pdf" },
-                    { label: "CV Professionnel", type: "PDF", link: "cv.pdf" }
+                    { label: "Fiche descriptive 2", type: "PDF", link: "fiche2.pdf" }
                   ].map((doc, i) => (
                     <a 
                       key={i} 
@@ -566,15 +573,15 @@ export default function App() {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-white/10 pb-8">
-              <div>
-                <span className="text-[12px] font-black text-purple-400 tracking-[0.4em] uppercase mb-4 block">RÉALISATION DE SOLUTIONS</span>
-                <h2 className="text-5xl font-black tracking-tighter uppercase">ÉPREUVE E5</h2>
+              <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-white/10 pb-8">
+                <div>
+                  <span className="text-[12px] font-black text-purple-400 tracking-[0.4em] uppercase mb-4 block">RÉALISATION DE SOLUTIONS</span>
+                  <h2 className="text-5xl font-black tracking-tighter uppercase">ÉPREUVE E5</h2>
+                </div>
+                <p className="text-gray-500 text-sm font-medium mt-4 md:mt-0 max-w-md">
+                  Cette épreuve porte sur la conception, l'exploitation et la maintenance de solutions d'infrastructure, de services et de réseaux au sein d'un système d'information.
+                </p>
               </div>
-              <p className="text-gray-500 text-sm font-medium mt-4 md:mt-0 max-w-md">
-                Conception et maintenance de solutions informatiques (SISR).
-              </p>
-            </div>
 
             <div className="grid lg:grid-cols-2 gap-12">
               {/* ########################################################################## */}
@@ -605,9 +612,6 @@ export default function App() {
                   
                   <div className="flex items-center justify-between mb-8">
                     <span className={`px-4 py-1.5 bg-${project.color}-500/10 text-${project.color}-400 rounded-lg text-[10px] font-black uppercase tracking-widest`}>PROJET {project.id}</span>
-                    <a href={project.link} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 hover:text-white transition-all text-gray-500">
-                      <ExternalLink size={16} />
-                    </a>
                   </div>
 
                   <h4 className="font-black text-2xl uppercase tracking-tighter mb-6 group-hover:text-white transition-colors">{project.title}</h4>
