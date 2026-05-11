@@ -42,10 +42,17 @@ interface TimelineItem {
 export default function App() {
   const [activeSection, setActiveSection] = useState('accueil');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [previewDoc, setPreviewDoc] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
+      // Calculate scroll progress
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalScroll) * 100;
+      setScrollProgress(progress);
+
       setIsScrolled(window.scrollY > 50);
       
       const sections = ['accueil', 'a-propos', 'parcours', 'alternance', 'epreuve-e4', 'epreuve-e5', 'veille', 'contact'];
@@ -152,6 +159,34 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#06080e] text-white font-sans selection:bg-purple-500/30">
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-[3px] z-[100] bg-white/5">
+        <motion.div 
+          className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      {/* Background Animated Elements */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.2, 0.1],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-purple-600/10 blur-[150px] rounded-full"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.1, 1],
+            opacity: [0.05, 0.15, 0.05],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] bg-indigo-600/10 blur-[150px] rounded-full"
+        />
+      </div>
+
       {/* Header / Navigation */}
       <header 
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -267,8 +302,12 @@ export default function App() {
 
           <div className="grid lg:grid-cols-3 gap-10">
             <div className="lg:col-span-2 p-10 bg-white/2 border border-white/5 rounded-[40px] relative overflow-hidden group">
+              <motion.div 
+                whileHover={{ scale: 1.01 }}
+                className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              />
               <div className="absolute top-0 left-0 w-2 h-full bg-purple-500 opacity-20"></div>
-              <p className="text-lg leading-relaxed text-gray-300 font-medium">
+              <p className="text-lg leading-relaxed text-gray-300 font-medium relative z-10">
                 Étudiant en <span className="text-white font-black uppercase tracking-tight">BTS SIO SISR</span> à l'Estiam Paris. Passionné par les <span className="text-white font-bold">infrastructures IT</span> et la <span className="text-white font-bold">cybersécurité</span>, je combine formation théorique et expérience pratique en alternance chez <span className="text-purple-400 font-bold uppercase transition-colors group-hover:text-purple-300">DS Avocats</span>, un cabinet d'avocats international à Paris.
               </p>
 
@@ -290,23 +329,39 @@ export default function App() {
 
             <div className="p-10 bg-[#0f1116] border border-white/5 rounded-[40px]">
               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-10 text-center">ATOUTS</span>
-              <div className="space-y-10">
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={{
+                  visible: { transition: { staggerChildren: 0.15 } }
+                }}
+                className="space-y-10"
+              >
                 {[
                   { title: "Sens du service", desc: "Écoute active & pédagogie" },
                   { title: "Rigueur", desc: "Analyse méthodique & documentation" },
                   { title: "Adaptabilité", desc: "Montée en compétences rapide" }
                 ].map((atout, index) => (
-                  <div key={index} className="flex gap-6 items-center">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-2xl border border-purple-500/30 flex items-center justify-center bg-purple-500/5">
-                      <CheckCircle2 size={16} className="text-purple-400" />
+                  <motion.div 
+                    key={index} 
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
+                    whileHover={{ scale: 1.05 }}
+                    className="flex gap-6 items-center group cursor-default"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 rounded-2xl border border-purple-500/30 flex items-center justify-center bg-purple-500/5 group-hover:bg-purple-500 transition-all">
+                      <CheckCircle2 size={16} className="text-purple-400 group-hover:text-white" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-base uppercase tracking-tight">{atout.title}</h4>
+                      <h4 className="font-bold text-base uppercase tracking-tight group-hover:text-white transition-colors">{atout.title}</h4>
                       <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">{atout.desc}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </div>
 
@@ -316,15 +371,24 @@ export default function App() {
               { icon: <Gamepad2 />, title: "Gaming & Hardware", desc: "Montage et optimisation PC", color: "blue" },
               { icon: <Languages />, title: "Langues", desc: "Anglais (intermédiaire) · Swahili", color: "emerald" }
             ].map((interest, idx) => (
-              <div key={idx} className="p-10 bg-white/2 border border-white/5 rounded-[40px] flex items-center gap-8 hover:bg-white/5 transition-all cursor-default">
-                <div className={`p-5 bg-${interest.color}-500/10 text-${interest.color}-400 rounded-3xl`}>
+              <motion.div 
+                key={idx} 
+                whileHover={{ 
+                  y: -10, 
+                  scale: 1.02,
+                  rotateX: 2,
+                  rotateY: 2,
+                }}
+                className="p-10 bg-white/2 border border-white/5 rounded-[40px] flex items-center gap-8 hover:bg-white/5 transition-all cursor-default shadow-lg hover:shadow-purple-500/5"
+              >
+                <div className={`p-5 bg-${interest.color}-500/10 text-${interest.color}-400 rounded-3xl transition-transform group-hover:scale-110`}>
                   {interest.icon}
                 </div>
                 <div>
                   <h4 className="font-black text-lg uppercase tracking-tighter">{interest.title}</h4>
                   <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">{interest.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -352,7 +416,10 @@ export default function App() {
                   <div className={`w-3 h-3 rounded-full bg-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.8)]`}></div>
                 </div>
                 
-                <div className="flex-1 p-10 bg-white/2 border border-white/5 rounded-[48px] group-hover:border-purple-500/20 group-hover:bg-white/5 transition-all duration-500">
+                <motion.div 
+                  whileHover={{ x: 10, scale: 1.01 }}
+                  className="flex-1 p-10 bg-white/2 border border-white/5 rounded-[48px] group-hover:border-purple-500/20 group-hover:bg-white/5 transition-all duration-500 shadow-xl hover:shadow-purple-500/5"
+                >
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
                     <span className="text-[11px] font-black tracking-[0.3em] text-purple-400 mb-3 md:mb-0 uppercase">{item.date}</span>
                   </div>
@@ -367,7 +434,7 @@ export default function App() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -399,30 +466,50 @@ export default function App() {
              </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div className="p-12 bg-white/2 border border-white/5 rounded-[60px]">
-              <div className="flex items-center gap-4 mb-10">
-                <div className="p-3 bg-purple-500/10 rounded-2xl"><Briefcase size={22} className="text-purple-400" /></div>
-                <h4 className="font-black text-lg tracking-widest uppercase text-gray-500">MISSIONS PRINCIPALES</h4>
+            <div className="grid lg:grid-cols-2 gap-12">
+              <div className="p-12 bg-white/2 border border-white/5 rounded-[60px]">
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="p-3 bg-purple-500/10 rounded-2xl"><Briefcase size={22} className="text-purple-400" /></div>
+                  <h4 className="font-black text-lg tracking-widest uppercase text-gray-500">MISSIONS PRINCIPALES</h4>
+                </div>
+                <motion.div 
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={{
+                    visible: {
+                      transition: {
+                        staggerChildren: 0.1
+                      }
+                    }
+                  }}
+                  className="grid gap-6"
+                >
+                  {[
+                    "Déploiement OS & logiciels (PC/mobiles)",
+                    "Gestion de parc & inventaire des actifs",
+                    "Administration vSphere & Citrix DaaS",
+                    "Support utilisateur proximité & distance",
+                    "Administration messagerie Exchange",
+                    "Comptes via Microsoft Admin Center"
+                  ].map((item, idx) => (
+                    <motion.div 
+                      key={idx} 
+                      variants={{
+                        hidden: { opacity: 0, x: -20 },
+                        visible: { opacity: 1, x: 0 }
+                      }}
+                      whileHover={{ x: 10 }}
+                      className="flex items-center gap-6 group cursor-default"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-purple-500/5 border border-purple-500/20 flex items-center justify-center text-purple-400 font-bold transition-all group-hover:bg-purple-500 group-hover:text-white group-hover:rotate-12 group-hover:scale-110">
+                        {idx + 1}
+                      </div>
+                      <span className="text-lg font-bold text-gray-300 uppercase tracking-tight group-hover:text-purple-400 transition-colors">{item}</span>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
-              <div className="grid gap-6">
-                {[
-                  "Déploiement OS & logiciels (PC/mobiles)",
-                  "Gestion de parc & inventaire des actifs",
-                  "Administration vSphere & Citrix DaaS",
-                  "Support utilisateur proximité & distance",
-                  "Administration messagerie Exchange",
-                  "Comptes via Microsoft Admin Center"
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-6 group">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/5 border border-purple-500/20 flex items-center justify-center text-purple-400 font-bold transition-all group-hover:bg-purple-500 group-hover:text-white">
-                      {idx + 1}
-                    </div>
-                    <span className="text-lg font-bold text-gray-300 uppercase tracking-tight">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             <div className="p-12 bg-white/2 border border-white/5 rounded-[60px]">
               <div className="flex items-center gap-4 mb-12">
@@ -534,25 +621,57 @@ export default function App() {
                   {/* 2. Remplacez '#' par le nom du fichier (ex: "tableau.pdf")                 */}
                   {/* ########################################################################## */}
                   {[
-                    { label: "Tableau de synthèse", type: "PDF", link: "tableau.pdf" },
-                    { label: "Fiche descriptive 1", type: "PDF", link: "fiche1.pdf" },
-                    { label: "Fiche descriptive 2", type: "PDF", link: "fiche2.pdf" }
+                    { label: "Tableau de Synthèse E4", type: "XLSX", link: "8 - BTS SIO - Annexe 8-1 - Tableau de synthèse - Epreuve E4 - BTS SIO 2024.xlsx" },
+                    { label: "Evaluation AD & GLPI", type: "PDF", link: "Evaluation - AD multi-sites - et GLPI-LDAP - HASSANI Tawab.pdf" },
+                    { label: "Evaluation Docker & Réseaux", type: "PDF", link: "Evaluation - Docker - Réseaux - Hassani Tawab.pdf" },
+                    { label: "Installation Firewall pfSense", type: "PDF", link: "Installation d'un Firewall pfSense - HASSANI Tawab.pdf" },
+                    { label: "Projet MonCoach Fit", type: "PDF", link: "Gestion de Projet App de Sport.pdf" },
+                    { label: "GPO & Partage de Fichiers", type: "WORD", link: "Création d'utilisateurs, de groupes et déploiementde GPO - Kory - Tawab (Exo 4 - 5 et 6).docx" },
+                    { label: "Installation Routeur Virtuel", type: "ODT", link: "tuto Installation d'un routeur.odt" }
                   ].map((doc, i) => (
-                    <a 
-                      key={i} 
-                      href={doc.link} 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="p-5 bg-white/2 border border-white/5 rounded-2xl flex items-center justify-between group hover:bg-white/5 hover:border-blue-500/30 transition-all transition-transform active:scale-95"
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-[11px] font-bold uppercase tracking-tight text-gray-300 group-hover:text-white transition-colors">{doc.label}</span>
-                        <span className="text-[9px] text-gray-600 mt-1 uppercase font-black">{doc.type}</span>
-                      </div>
-                      <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-all">
-                        <ChevronDown size={14} className="-rotate-90" />
-                      </div>
-                    </a>
+                    <div key={i} className="relative group/doc">
+                      <a 
+                        href={doc.link} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        onMouseEnter={() => setPreviewDoc(doc.link)}
+                        onMouseLeave={() => setPreviewDoc(null)}
+                        className="p-5 bg-white/2 border border-white/5 rounded-2xl flex items-center justify-between group hover:bg-white/5 hover:border-blue-500/30 transition-all transition-transform active:scale-95"
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-[11px] font-bold uppercase tracking-tight text-gray-300 group-hover:text-white transition-colors">{doc.label}</span>
+                          <span className="text-[9px] text-gray-600 mt-1 uppercase font-black">{doc.type}</span>
+                        </div>
+                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-all">
+                          <ExternalLink size={14} />
+                        </div>
+                      </a>
+
+                      {/* Hover Preview Tooltip (Desktop Only) */}
+                      <AnimatePresence>
+                        {previewDoc === doc.link && doc.link.endsWith('.pdf') && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                            className="hidden lg:block absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 h-80 bg-[#0f1116] border border-blue-500/30 rounded-2xl overflow-hidden shadow-2xl z-[60] pointer-events-none"
+                          >
+                            <div className="bg-blue-500/10 px-4 py-2 border-b border-white/5 flex items-center justify-between">
+                              <span className="text-[8px] font-black uppercase tracking-widest text-blue-400">Aperçu Rapide</span>
+                              <div className="flex gap-1">
+                                <div className="w-1.5 h-1.5 rounded-full bg-red-500/50"></div>
+                                <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50"></div>
+                                <div className="w-1.5 h-1.5 rounded-full bg-green-500/50"></div>
+                              </div>
+                            </div>
+                            <iframe 
+                              src={`${doc.link}#toolbar=0&navpanes=0&scrollbar=0`}
+                              className="w-full h-full border-none pointer-events-none grayscale opacity-80 group-hover/doc:grayscale-0 group-hover/doc:opacity-100 transition-all"
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   ))}
                   {/* --- FIN SECTION DOCUMENTS --- */}
                 </div>
@@ -639,87 +758,94 @@ export default function App() {
             <h2 className="text-5xl font-black mt-12 tracking-tighter leading-[1.1] uppercase">L'IA dans le Sport & <br/><span className="text-purple-500/30">les montres connectées</span></h2>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-32">
-            <div className="space-y-8">
-              <h3 className="text-2xl font-black uppercase tracking-tight">Qu'est ce que la veille technologique ?</h3>
-              <p className="text-lg text-gray-400 leading-relaxed font-medium">
-                La veille technologique consiste à surveiller les évolutions techniques, les innovations et les nouveaux produits dans un secteur donné. Elle permet de rester compétitif, d'anticiper les changements et de sécuriser les infrastructures.
-              </p>
-              <div className="p-8 bg-white/2 border border-white/10 rounded-[40px] italic text-gray-300 text-sm leading-relaxed border-l-4 border-l-purple-500">
-                « La veille technologique se doit de prévenir et alerter tout responsable d'un changement, d'une nouveauté ou d'une innovation qu'elle soit technique ou scientifique. »
+          {/* Definition Section */}
+          <div className="mb-32 max-w-3xl mx-auto text-center space-y-8">
+            <h3 className="text-2xl font-black uppercase tracking-tight">Qu'est ce que la veille technologique ?</h3>
+            <p className="text-lg text-gray-400 leading-relaxed font-medium">
+              La veille technologique consiste à surveiller les évolutions techniques et les innovations d'un secteur. Elle permet de rester compétitif et d'anticiper les ruptures technologiques comme l'intégration de l'IA générative dans les terminaux mobiles.
+            </p>
+            <div className="p-8 bg-white/2 border border-white/10 rounded-[40px] italic text-gray-300 text-sm leading-relaxed border-l-4 border-l-purple-500 mx-auto text-left">
+              « La veille technologique se doit de prévenir et alerter tout responsable d'un changement, d'une nouveauté ou d'une innovation technique. »
+            </div>
+          </div>
+
+          <div className="mb-20">
+             <div className="flex items-center gap-4 mb-16">
+                <div className="w-12 h-[2px] bg-purple-500"></div>
+                <h3 className="text-2xl font-black uppercase tracking-tight">Articles de Veille Récents</h3>
               </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              {/* DESSOUS : Vous pouvez changer les images de la veille ici (copiez vos photos dans "public") */}
-              {[
-                { title: "Strava Health AI", img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=400" },
-                { title: "Garmin AI Coach", img: "https://images.unsplash.com/photo-1575311373937-040b8e19f727?auto=format&fit=crop&q=80&w=400" },
-                { title: "Biometric AI Labs", img: "https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&q=80&w=400" },
-                { title: "Smart Coaching", img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=400" }
-              ].map((item, i) => (
-                <div 
-                  key={i} 
-                  className="relative aspect-[4/5] rounded-3xl overflow-hidden group shadow-2xl"
-                >
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover grayscale opacity-50 transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#06080e] via-transparent to-transparent flex items-end p-6">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-white">{item.title}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 mb-20">
-            {[
-              { 
-                title: "Coaching Adaptatif", 
-                desc: "L'IA crée des entraînements qui s'ajustent en temps réel selon la fatigue et les données biométriques.", 
-                icon: <Activity />,
-                color: "purple"
-              },
-              { 
-                title: "Analyse de Récupération", 
-                desc: "Prédiction précise du temps de repos nécessaire pour éviter les blessures (IA prédictive évolutive).", 
-                icon: <Clock />,
-                color: "blue"
-              },
-              { 
-                title: "Prédiction de Performance", 
-                desc: "Analyse des données historiques pour estimer un temps sur marathon ou triathlon avec fiabilité.", 
-                icon: <TrendingUp />,
-                color: "emerald"
-              }
-            ].map((trend, idx) => (
-              <motion.div 
-                key={idx}
-                whileHover={{ y: -10 }}
-                className="p-10 bg-[#0f1116] border border-white/5 rounded-[50px] group"
-              >
-                <div className={`w-16 h-16 bg-${trend.color}-500/10 text-${trend.color}-400 rounded-2xl flex items-center justify-center mb-8 transition-transform duration-500 group-hover:scale-110`}>
-                  {trend.icon}
-                </div>
-                <h4 className="text-xl font-black mb-4 uppercase tracking-tighter">{trend.title}</h4>
-                <p className="text-gray-500 text-xs leading-relaxed font-medium uppercase tracking-tight">{trend.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+              <div className="grid md:grid-cols-2 gap-8 mb-20">
+                {[
+                  {
+                    title: "Tout savoir sur l’IA Active Intelligence de Garmin Connect+",
+                    source: "nakan.ch",
+                    date: "15 Mai 2025",
+                    desc: "Analyse approfondie de la nouvelle IA de Garmin qui promet un coaching prédictif basé sur l'écosystème Connect+.",
+                    link: "https://www.nakan.ch/wp/2025/05/15/tout-savoir-sur-lia-active-intelligence-de-garmin-connect-plus-connect/"
+                  },
+                  {
+                    title: "Strava court après les tricheurs grâce à l'IA",
+                    source: "Presse-citron",
+                    date: "21 Octobre 2025",
+                    desc: "Déploiement d'outils d'IA pour identifier les activités suspectes et garantir l'équité sur la plateforme.",
+                    link: "https://www.presse-citron.net/avec-cette-nouvelle-fonctionnalite-boostee-a-lia-strava-court-apres-les-tricheurs/"
+                  },
+                  {
+                    title: "Samsung Galaxy AI : Le Score d'Énergie",
+                    source: "Samsung",
+                    date: "Juillet 2024",
+                    desc: "Utilisation de l'IA pour calculer un score de forme physique quotidien basé sur les données de santé Galaxy.",
+                    link: "https://www.samsung.com/fr/guide-achat-mobile/fonctionnalites-galaxy-ai/score-energie/"
+                  },
+                  {
+                    title: "De l’athlète à l’entraîneur virtuel : l’IA comme coach personnel",
+                    source: "aivancity.ai",
+                    date: "10 Décembre 2025",
+                    desc: "Comment l'IA devient un véritable coach capable de s'adapter à chaque profil de sportif.",
+                    link: "https://aivancity.ai/blog/de-lathlete-a-lentraineur-virtuel-lia-comme-coach-personnel/"
+                  }
+                ].map((article, idx) => (
+                  <motion.a 
+                    key={idx}
+                    href={article.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    whileHover={{ y: -5 }}
+                    className="p-10 bg-[#0f1116] border border-white/5 rounded-[40px] group flex flex-col justify-between hover:border-purple-500/30 transition-all duration-500"
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-6">
+                        <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest">{article.source}</span>
+                        <span className="text-[10px] text-gray-600 font-bold uppercase">{article.date}</span>
+                      </div>
+                      <h4 className="text-xl font-black mb-6 uppercase tracking-tighter group-hover:text-white transition-colors">{article.title}</h4>
+                      <p className="text-xs text-gray-500 leading-relaxed font-medium uppercase tracking-tight mb-8 underline decoration-white/5 underline-offset-8">
+                        {article.desc}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-purple-400 text-[10px] font-black uppercase tracking-widest group-hover:gap-4 transition-all">
+                      Lire l'article <ArrowRight size={14} />
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
 
-          <div className="p-12 bg-white/2 border border-white/5 rounded-[60px]">
-            <h4 className="text-3xl font-black mb-12 uppercase tracking-tighter text-center">Pourquoi l'IA aide le sportif ?</h4>
-            <div className="grid md:grid-cols-3 gap-12 text-center">
-              {[
-                { label: "Simplicité", desc: "Conseils en langage naturel plutôt que graphiques complexes." },
-                { label: "Sécurité", desc: "Réduction drastique des risques de surentraînement." },
-                { label: "Sur-mesure", desc: "Suivi personnalisé equivalent à celui d'un professionnel." }
-              ].map((item, i) => (
-                <div key={i}>
-                  <p className="text-purple-400 font-black mb-4 uppercase tracking-[0.3em] text-xs underline underline-offset-8 decoration-purple-500/30">{item.label}</p>
-                  <p className="text-xs text-gray-500 font-bold uppercase leading-relaxed tracking-tight">{item.desc}</p>
+              <div className="p-12 bg-white/2 border border-white/5 rounded-[60px]">
+                <h4 className="text-3xl font-black mb-12 uppercase tracking-tighter text-center">Pourquoi l'IA aide le sportif ?</h4>
+                <div className="grid md:grid-cols-3 gap-12 text-center">
+                  {[
+                    { label: "Simplicité", desc: "Conseils en langage naturel plutôt que graphiques complexes." },
+                    { label: "Sécurité", desc: "Réduction drastique des risques de surentraînement." },
+                    { label: "Sur-mesure", desc: "Suivi personnalisé equivalent à celui d'un professionnel." }
+                  ].map((item, i) => (
+                    <div key={i}>
+                      <p className="text-purple-400 font-black mb-4 uppercase tracking-[0.3em] text-xs underline underline-offset-8 decoration-purple-500/30">{item.label}</p>
+                      <p className="text-xs text-gray-500 font-bold uppercase leading-relaxed tracking-tight">{item.desc}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
           </div>
         </div>
       </section>
