@@ -1,5 +1,6 @@
 {
-  "name": "Portfolio BTS SIO - Tawab HASSANI",
-  "description": "Portfolio professionnel de Tawab HASSANI, étudiant en BTS SIO SISR, alternant chez DS AVOCATS.",
-  "requestFramePermissions": []
+  "name": "Portfolio de Tawab Hassani",
+  "description": "Portfolio professionnel de Tawab Hassani, étudiant en BTS SIO SISR, spécialisé en infrastructure et cybersécurité.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
 }
