@@ -884,7 +884,7 @@ export default function App() {
                       </div>
                     </div>
                     <img 
-                      src="/Capture-google-alertes.PNG" 
+                      src="Capture-google-alertes.PNG" 
                       alt="Capture Google Alerts"
                       className="w-full h-auto rounded-b-[22px] group-hover:scale-[1.02] transition-transform duration-700"
                     />
@@ -905,7 +905,7 @@ export default function App() {
                       </div>
                     </div>
                     <img 
-                      src="/Capture-Feedly.PNG" 
+                      src="Capture-Feedly.PNG" 
                       alt="Capture Feedly"
                       className="w-full h-auto rounded-b-[22px] group-hover:scale-[1.02] transition-transform duration-700"
                     />
