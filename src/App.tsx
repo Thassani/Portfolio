@@ -828,7 +828,6 @@ export default function App() {
             <h2 className="text-5xl font-black mt-12 tracking-tighter leading-[1.1] uppercase">L'IA dans le Sport & <br/><span className="text-purple-500/30">les montres connectées</span></h2>
           </div>
 
-          {/* Definition Section */}
           <div className="mb-32 max-w-3xl mx-auto text-center space-y-8">
             <h3 className="text-2xl font-black uppercase tracking-tight">Qu'est ce que la veille technologique ?</h3>
             <p className="text-lg text-gray-400 leading-relaxed font-medium">
@@ -836,6 +835,86 @@ export default function App() {
             </p>
             <div className="p-8 bg-white/2 border border-white/10 rounded-[40px] italic text-gray-300 text-sm leading-relaxed border-l-4 border-l-purple-500 mx-auto text-left">
               « La veille technologique se doit de prévenir et alerter tout responsable d'un changement, d'une nouveauté ou d'une innovation technique. »
+            </div>
+          </div>
+
+          {/* Methodology Section */}
+          <div className="mb-32">
+            <div className="p-12 md:p-16 bg-[#0f1116] border border-white/5 rounded-[60px] shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-12 opacity-5">
+                <Target size={120} />
+              </div>
+              
+              <div className="max-w-3xl">
+                <h3 className="text-3xl font-black uppercase tracking-tighter mb-8">Méthode de veille</h3>
+                <p className="text-gray-400 font-medium leading-relaxed mb-10">
+                  Pour réaliser cette veille, j'ai utilisé plusieurs outils :
+                </p>
+                
+                <ul className="space-y-6 mb-12">
+                  {[
+                    { tool: "Google Alerts", desc: "Afin de recevoir automatiquement des articles liés à mes mots-clés." },
+                    { tool: "Feedly", desc: "Afin de regrouper mes sources fiables dans un seul espace." },
+                    { tool: "Un tableau de synthèse", desc: "Afin de classer les informations retenues par date, source, thème SISR et apport personnel." }
+                  ].map((m, i) => (
+                    <li key={i} className="flex gap-4 group">
+                      <div className="mt-1.5 w-1.5 h-1.5 bg-purple-500 rounded-full flex-shrink-0 group-hover:scale-125 transition-transform"></div>
+                      <p className="text-gray-400 text-sm font-medium">
+                        <span className="text-white font-bold">{m.tool}</span>, {m.desc}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="text-gray-400 text-sm font-medium leading-relaxed italic border-l-2 border-purple-500/30 pl-6">
+                  Cette organisation m'a permis de suivre régulièrement l'évolution du sujet et de sélectionner les informations les plus utiles pour mon parcours SISR. J'ai ensuite regroupé ces informations dans un tableau de synthèse mis à jour de manière régulière.
+                </p>
+              </div>
+
+              {/* Screenshots Gallery */}
+              <div className="mt-20 grid md:grid-cols-2 gap-10">
+                <div className="space-y-4">
+                  <div className="bg-[#1a1d24] border border-white/10 rounded-[30px] p-2 overflow-hidden group shadow-2xl">
+                    <div className="bg-[#252a35] px-4 py-2 border-b border-white/5 flex items-center justify-between">
+                      <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">Google Alerts</span>
+                      <div className="flex gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-red-500/30"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/30"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500/30"></div>
+                      </div>
+                    </div>
+                    <img 
+                      src="/Capture-google-alertes.PNG" 
+                      alt="Capture Google Alerts"
+                      className="w-full h-auto rounded-b-[22px] group-hover:scale-[1.02] transition-transform duration-700"
+                    />
+                  </div>
+                  <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest px-4">
+                    Capture de mes alertes Google utilisées pour suivre l'IA dans le sport & les montres connectées.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="bg-[#1a1d24] border border-white/10 rounded-[30px] p-2 overflow-hidden group shadow-2xl">
+                    <div className="bg-[#252a35] px-4 py-2 border-b border-white/5 flex items-center justify-between">
+                      <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">Feedly Dashboard</span>
+                      <div className="flex gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-red-500/30"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/30"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500/30"></div>
+                      </div>
+                    </div>
+                    <img 
+                      src="/Capture-Feedly.PNG" 
+                      alt="Capture Feedly"
+                      className="w-full h-auto rounded-b-[22px] group-hover:scale-[1.02] transition-transform duration-700"
+                    />
+                  </div>
+                  <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest px-4">
+                    Capture de mon dossier Feedly regroupant mes sources principales : Frandroid, nakan.ch, CNIL ...
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
