@@ -190,7 +190,7 @@ export default function App() {
       </header>
 
       {/* Hero Section */}
-      <section id="accueil" className="relative pt-40 pb-20 px-8 overflow-hidden">
+      <section id="accueil" className="relative pt-32 pb-16 md:pt-40 md:pb-20 px-8 overflow-hidden">
         <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center gap-16">
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
@@ -199,9 +199,12 @@ export default function App() {
           >
             <div className="absolute inset-0 bg-[#7c3aed]/20 rounded-3xl rotate-6 -z-10 shadow-2xl"></div>
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl -rotate-3 -z-10"></div>
-            {/* PHOTO DE PROFIL : Remplacez src="..." par le chemin de votre photo (ex: "/ma-photo.jpg") */}
+            {/* 📸 TA PHOTO DE PROFIL :
+                1. Mets ton fichier "photo-pro.png" dans le dossier "public"
+                2. Le code ci-dessous l'affichera automatiquement
+            */}
             <img 
-              src="/photo-pro.png" 
+              src="photo-pro.png" 
               alt="Profile"
               className="w-full h-full object-cover rounded-3xl shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
             />
@@ -239,9 +242,6 @@ export default function App() {
                 <button onClick={() => scrollToSection('contact')} className="bg-[#7c3aed] text-white px-10 py-5 rounded-2xl font-bold flex items-center gap-2 hover:bg-[#6d28d9] transition-all shadow-xl shadow-purple-500/20 active:scale-95">
                   Me contacter <ArrowRight size={18} />
                 </button>
-                <button onClick={() => scrollToSection('parcours')} className="bg-white/5 border border-white/10 text-white px-10 py-5 rounded-2xl font-bold hover:bg-white/10 transition-all active:scale-95">
-                  Voir mes projets
-                </button>
               </div>
             </motion.div>
           </div>
@@ -249,7 +249,7 @@ export default function App() {
       </section>
 
       {/* Presentation */}
-      <section id="a-propos" className="py-32 px-8 bg-[#0a0c10]">
+      <section id="a-propos" className="py-20 md:py-32 px-8 bg-[#0a0c10]">
         <div className="max-w-[1400px] mx-auto">
           <div className="mb-16">
             <span className="text-[12px] font-bold text-purple-400 tracking-[0.3em] uppercase">À PROPOS</span>
@@ -323,7 +323,7 @@ export default function App() {
       </section>
 
       {/* Timeline */}
-      <section id="parcours" className="py-40 px-8">
+      <section id="parcours" className="py-20 md:py-40 px-8">
         <div className="max-w-[1000px] mx-auto">
           <div className="mb-24 text-center">
             <span className="text-[12px] font-bold text-purple-400 tracking-[0.3em] uppercase underline decoration-purple-500 underline-offset-8">CHRONOLOGIE</span>
@@ -367,7 +367,7 @@ export default function App() {
       </section>
 
       {/* Apprenticeship Detail */}
-      <section id="alternance" className="py-32 px-8 bg-[#0a0c10]">
+      <section id="alternance" className="py-20 md:py-32 px-8 bg-[#0a0c10]">
         <div className="max-w-[1400px] mx-auto">
           <div className="mb-16">
             <span className="text-[12px] font-bold text-purple-400 tracking-[0.3em] uppercase">DS AVOCATS — PARIS</span>
@@ -449,7 +449,7 @@ export default function App() {
       </section>
 
       {/* Exams Sections */}
-      <section className="py-32 px-8 overflow-hidden bg-[#06080e]">
+      <section className="py-20 md:py-32 px-8 overflow-hidden bg-[#06080e]">
         <div className="max-w-[1400px] mx-auto">
           {/* EPREUVE E4 */}
           <motion.div 
@@ -521,15 +521,15 @@ export default function App() {
                 </h4>
                 <div className="space-y-4">
                   {/* ########################################################################## */}
-                  {/* SECTION DOCUMENTS E4 : MODIFIEZ LES LIENS ICI                             */}
-                  {/* Pour chaque document, remplacez '#' par le nom de votre fichier (ex: "/tableau.pdf") */}
-                  {/* Les fichiers doivent être placés dans le dossier "public" de votre projet */}
+                  {/* 📂 SECTION DOCUMENTS E4 : MODIFIEZ LES LIENS ICI                             */}
+                  {/* 1. Mettez vos fichiers PDF (ex: tableau.pdf) dans le dossier "public"      */}
+                  {/* 2. Remplacez '#' par le nom du fichier (ex: "tableau.pdf")                 */}
                   {/* ########################################################################## */}
                   {[
-                    { label: "Tableau de synthèse", type: "PDF", link: "#" },
-                    { label: "Fiche descriptive 1", type: "PDF", link: "#" },
-                    { label: "Fiche descriptive 2", type: "PDF", link: "#" },
-                    { label: "CV Professionnel", type: "PDF", link: "#" }
+                    { label: "Tableau de synthèse", type: "PDF", link: "tableau.pdf" },
+                    { label: "Fiche descriptive 1", type: "PDF", link: "fiche1.pdf" },
+                    { label: "Fiche descriptive 2", type: "PDF", link: "fiche2.pdf" },
+                    { label: "CV Professionnel", type: "PDF", link: "cv.pdf" }
                   ].map((doc, i) => (
                     <a 
                       key={i} 
@@ -628,7 +628,7 @@ export default function App() {
       </section>
 
       {/* Veille Technologique - THE BIG REQUESTED SECTION */}
-      <section id="veille" className="py-32 px-8 bg-[#0a0c10]">
+      <section id="veille" className="py-20 md:py-32 px-8 bg-[#0a0c10]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-24">
             <span className="text-[12px] font-black text-purple-400 tracking-[0.4em] uppercase underline decoration-purple-500 decoration-2 underline-offset-[12px]">VEILLE TECHNOLOGIQUE — 2024/2026</span>
@@ -721,7 +721,7 @@ export default function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-40 px-8">
+      <section id="contact" className="py-20 md:py-40 px-8">
         <div className="max-w-[1400px] mx-auto">
           <div className="mb-20">
             <span className="text-[12px] font-bold text-purple-400 tracking-[0.3em] uppercase underline decoration-purple-500 underline-offset-8">ME CONTACTER</span>
@@ -750,11 +750,12 @@ export default function App() {
               ))}
             </div>
 
-            <div className="lg:col-span-3 p-12 bg-[#0f1116] border border-white/5 rounded-[60px] relative overflow-hidden shadow-2xl">
-               <div className="flex items-center justify-between mb-12">
+            <div className="lg:col-span-3 p-6 md:p-12 bg-[#0f1116] border border-white/5 rounded-[40px] md:rounded-[60px] relative overflow-hidden shadow-2xl">
+               <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
                  <div className="flex items-center gap-6">
-                   <div className="w-14 h-14 rounded-[20px] border border-purple-500/30 flex items-center justify-center p-1">
-                     <div className="w-full h-full rounded-[15px] bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-black text-xl">TH</div>
+                   <div className="w-14 h-14 rounded-[20px] border border-purple-500/30 flex items-center justify-center p-1 overflow-hidden">
+                     {/* 📸 PETITE PHOTO FORMULAIRE */}
+                     <img src="photo-pro.png" className="w-full h-full object-cover rounded-[15px]" alt="Avatar" />
                    </div>
                    <div>
                      <h4 className="font-black text-lg uppercase tracking-tight">Tawab Hassani</h4>
